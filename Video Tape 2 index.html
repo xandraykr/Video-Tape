@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Cute Video Showcase</title>
+  <style>
+    /* General body styling */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      color: #333;
+    }
+
+    h1 {
+      color: #333;
+      font-size: 2rem;
+      text-align: center;
+    }
+
+    /* Welcome page styling */
+    .welcome {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .welcome img {
+      max-width: 150px;
+    }
+
+    .video-tape {
+      width: 100px;
+      cursor: pointer;
+      margin: 30px;
+    }
+
+    .video-reader {
+      width: 120px;
+      height: 150px;
+      border: 5px solid #f2c0d7;
+      border-radius: 15px;
+      background-color: #e0c2d7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+      opacity: 0.8;
+    }
+
+    .drag-instruction {
+      font-size: 1.2rem;
+      margin: 20px;
+      font-family: 'Arial', sans-serif;
+      color: #f25c8a;
+      font-weight: bold;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #f25c8a;
+      margin-top: 20px;
+    }
+
+    /* Final screen with picture */
+    .final-screen {
+      text-align: center;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    .final-screen img {
+      max-width: 200px;
+      border-radius: 15px;
+    }
+
+    /* Video player */
+    video {
+      max-width: 100%;
+      display: block;
+      margin: 20px 0;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Welcome page -->
+  <div class="welcome">
+    <h1>Look! I think you left this behind...</h1>
+    <img src="https://png.pngtree.com/recommend-works/png-clipart/20240917/ourmid/pngtree-vintage-tapes-png-image_13804642.png" class="video-tape" id="video-tape" draggable="true" alt="Video Tape">
+    <h2>Let's check what's inside!</h2>
+    <div class="video-reader" id="video-reader">
+        <img src="https://ih1.redbubble.net/image.3963896133.5434/st,small,507x507-pad,600x600,f8f8f8.jpg" class="video-tape" id="video-reader" draggable="true" alt="Video Tape">
+    </div>
+    <p class="drag-instruction">Drag the video tape into the video tape reader to check the treasure inside!</p>
+  </div>
+
+  <!-- Loading screen -->
+  <div class="loading" id="loading">
+    <p>Loading...</p>
+    <p id="countdown"></p>
+  </div>
+
+  <!-- Final video player -->
+  <div class="final-screen" id="final-screen">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/KonGRQ-6Ltc?feature=shared" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="final-message">
+      <img src="https://i.imgur.com/6W1P1f2.png" alt="Hikari Loves You" id="ending-picture">
+      <h2>Hikari loves youuu, Nagi!! 💖</h2>
+    </div>
+  </div>
+
+  <script>
+    // Drag-and-Drop Logic
+    const videoTape = document.getElementById('video-tape');
+    const videoReader = document.getElementById('video-reader');
+    const welcomeScreen = document.querySelector('.welcome');
+    const loadingScreen = document.getElementById('loading');
+    const countdownDisplay = document.getElementById('countdown');
+    const finalScreen = document.getElementById('final-screen');
+    const videoPlayer = document.getElementById('video-player');
+
+    let countdown = 5;
+
+    videoTape.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text', event.target.id);
+    });
+
+    videoReader.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    videoReader.addEventListener('drop', (event) => {
+      event.preventDefault();
+      startLoading();
+    });
+
+    // Start Loading animation
+    function startLoading() {
+      welcomeScreen.style.display = 'none';
+      loadingScreen.style.display = 'block';
+      let interval = setInterval(() => {
+        countdownDisplay.innerText = `Please wait... ${countdown}`;
+        countdown--;
+        if (countdown < 0) {
+          clearInterval(interval);
+          showVideo();
+        }
+      }, 1000);
+    }
+
+    // Show the video and final screen
+    function showVideo() {
+      loadingScreen.style.display = 'none';
+      finalScreen.style.display = 'flex';
+      videoPlayer.play();
+    }
+  </script>
+
+</body>
+</html>
